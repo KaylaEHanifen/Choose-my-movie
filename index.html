@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classic Film Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .movie-image {
+      max-width: 200px;
+      max-height: 300px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-5 mb-4">I Don't Know What to Watch</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <button class="btn btn-primary mb-3" onclick="displayRandomMovie()">Pick My Movie</button>
+        <div id="movieDisplay" class="mb-3"></div>
+      </div>
+      <div class="col-md-6">
+        <select id="movieSelect" class="form-select mb-3" onchange="selectMovie()">
+          <option value="">Classic Film Randomizer</option>
+          <!-- Populate dropdown with movie titles -->
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var movies = [
+      { title: "A Trip to the Moon", year: 1902, origin: "France", imageUrl: "film posters/A Trip to the Moon by Hoolst Design.jpeg" },
+      { title: "The Birth of a Nation", year: 1915, origin: "USA", imageUrl: "film posters/The Birth of a Nation (1915).jpeg" },
+      { title: "Nosferatu", year: 1922, origin: "Germany", imageUrl: "film posters/Nosferatu (1922).jpeg" },
+      { title: "Metropolis", year: 1927, origin: "Germany", imageUrl: "film posters/Metropolis(1927).jpeg" },
+      { title: "City Lights", year: 1931, origin: "USA", imageUrl: "film posters/City Lights (1931) [2016  3000].jpeg" },
+      { title: "Gone with the Wind", year: 1939, origin: "USA", imageUrl: "film posters/GonewiththeWind(1939).jpeg" },
+      { title: "Citizen Kane", year: 1941, origin: "USA", imageUrl: "film posters/CitizenKane(1941).jpeg" },
+      { title: "Casablanca", year: 1942, origin: "USA", imageUrl: "film posters/Casablanca.jpeg" },
+      { title: "It's a Wonderful Life", year: 1946, origin: "USA", imageUrl: "film posters/ItsaWonderfulLife.jpeg" },
+      { title: "Rashomon", year: 1950, origin: "Japan", imageUrl: "film posters/Rashômon (Akira Kurosawa) 1950.jpeg" },
+      { title: "Seven Samurai", year: 1954, origin: "Japan", imageUrl: "film posters/Seven Samurai (1954) [660 x 1002].jpeg" },
+      { title: "Pather Panchali", year: 1955, origin: "India", imageUrl: "film posters/PatherPanchali.jpeg" },
+      { title: "Vertigo", year: 1958, origin: "USA", imageUrl: "film posters/Vertigo.jpeg" },
+      { title: "Lawrence of Arabia", year: 1962, origin: "UK", imageUrl: "film posters/Lawrence of Arabia.jpeg" },
+      { title: "The Good, the Bad and the Ugly", year: 1966, origin: "Italy/Spain", imageUrl: "film posters/The Good, the Bad and the Ugly (1966, Italy:Spain).jpeg" },
+      { title: "2001: A Space Odyssey", year: 1968, origin: "UK/USA", imageUrl: "film posters/2001_ A SPACE ODYSSEY (1968).jpeg" },
+      { title: "The Godfather", year: 1972, origin: "USA", imageUrl: "film posters/The Godfather (1972) [1088 x 1640].jpeg" },
+      { title: "One Flew Over the Cuckoo's Nest", year: 1975, origin: "USA", imageUrl: "film posters/Onewhoflewoverthecuckoo'snest.jpg" },
+      { title: "Star Wars: Episode IV - A New Hope", year: 1977, origin: "USA", imageUrl: "film posters/Star Wars- Episode IV - A New Hope.jpeg" },
+      { title: "Stalker", year: 1979, origin: "USSR", imageUrl: "film posters/Stalker (1979, USSR).jpeg" },
+      { title: "Apocalypse Now", year: 1979, origin: "USA", imageUrl: "film posters/Apocalypse Now (1979, USA).jpeg" },
+      { title: "Blade Runner", year: 1982, origin: "USA", imageUrl: "film posters/Blade Runner (1982, USA).jpeg" },
+      { title: "Ran", year: 1985, origin: "Japan", imageUrl: "film posters/Ran (1985).jpeg" },
+      { title: "Cinema Paradiso", year: 1988, origin: "Italy", imageUrl: "film posters/Cinema Paradiso (1988, Italy.jpeg" },
+      { title: "Goodfellas", year: 1990, origin: "USA", imageUrl: "film posters/GoodFellas (1990).jpeg" },
+      { title: "Schindler's List", year: 1993, origin: "USA", imageUrl: "film posters/Schindler's List (1993, USA).jpeg" },
+      { title: "The Shawshank Redemption", year: 1994, origin: "USA", imageUrl: "film posters/The Shawshank Redemption.jpeg" },
+      { title: "Pulp Fiction", year: 1994, origin: "USA", imageUrl: "film posters/Pulp Fiction (1994, USA) .jpeg" },
+      { title: "The Matrix", year: 1999, origin: "USA", imageUrl: "film posters/The Matrix series (1999-2003).jpeg" },
+      { title: "In the Mood for Love", year: 2000, origin: "Hong Kong", imageUrl: "film posters/In the Mood for Love (2000, Hong Kong).jpeg" },
+      { title: "Spirited Away", year: 2001, origin: "Japan", imageUrl: "film posters/Spirited Away (2001, Japan).jpeg" },
+      { title: "The Lord of the Rings: The Return of the King", year: 2003, origin: "New Zealand/USA", imageUrl: "film posters/The Lord of the Rings- The Return of the King (2003, New Zealand:USA) .jpeg" },
+      { title: "Pan's Labyrinth", year: 2006, origin: "Mexico/Spain", imageUrl: "film posters/Pan's Labyrinth (2006, Mexico:Spain).jpeg" },
+      { title: "There Will Be Blood", year: 2007, origin: "USA", imageUrl: "film posters/There Will Be Blood (2007, USA).jpeg" },
+      { title: "Inception", year: 2010, origin: "USA", imageUrl: "film posters/Inception (2010, USA) .jpeg" },
+      { title: "A Separation", year: 2011, origin: "Iran", imageUrl: "film posters/A Separation (2011, Iran).jpeg" },
+      { title: "Mad Max: Fury Road", year: 2015, origin: "Australia/USA", imageUrl: "film posters/Mad Max- Fury Road (2015, Australia:USA).jpeg" },
+      { title: "Parasite", year: 2019, origin: "South Korea", imageUrl: "film posters/parasite.jpeg" },
+      { title: "Nomadland", year: 2020, origin: "USA", imageUrl: "film posters/Nomadland (2020, USA.jpeg" }
+    ];
+
+    function displayRandomMovie() {
+      var randomIndex = Math.floor(Math.random() * movies.length);
+      var movie = movies[randomIndex];
+      document.getElementById("movieDisplay").innerHTML = `
+          <h3>${movie.title} (${movie.year}, ${movie.origin})</h3>
+          <img src="${movie.imageUrl}" alt="Poster of ${movie.title}" class="movie-image">
+      `;
+    }
+
+    function selectMovie() {
+      var selectedMovieIndex = document.getElementById("movieSelect").value;
+      if (selectedMovieIndex) {
+        var selectedMovie = movies[selectedMovieIndex];
+        document.getElementById("movieDisplay").innerHTML = `
+            <h3>${selectedMovie.title} (${selectedMovie.year}, ${selectedMovie.origin})</h3>
+            <img src="${selectedMovie.imageUrl}" alt="Poster of ${selectedMovie.title}" class="movie-image">
+          `;
+      } else {
+        document.getElementById("movieDisplay").innerHTML = "";
+      }
+    }
+
+    // Populate dropdown menu with movie titles
+    var dropdownMenu = document.getElementById("movieSelect");
+    movies.forEach((movie, index) => {
+      var option = new Option(movie.title, index);
+      dropdownMenu.appendChild(option);
+    });
+  </script>
+</body>
+</html>
