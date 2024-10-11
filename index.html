@@ -71,24 +71,24 @@
       { title: "Parasite", year: 2019, origin: "South Korea", imageUrl: "parasite.jpeg" },
       { title: "Nomadland", year: 2020, origin: "USA", imageUrl: "Nomadland (2020, USA.jpeg" }
     ];
-
-    function displayRandomMovie() {
-      var randomIndex = Math.floor(Math.random() * movies.length);
-      var movie = movies[randomIndex];
+    function updateMovie(movie){
       document.getElementById("movieDisplay").innerHTML = `
           <h3>${movie.title} (${movie.year}, ${movie.origin})</h3>
           <img src="images/${movie.imageUrl}" alt="Poster of ${movie.title}" class="movie-image">
       `;
     }
 
+    function displayRandomMovie() {
+      var randomIndex = Math.floor(Math.random() * movies.length);
+      var movie = movies[randomIndex];
+      updateMovie(movie);
+    }
+
     function selectMovie() {
       var selectedMovieIndex = document.getElementById("movieSelect").value;
       if (selectedMovieIndex) {
         var selectedMovie = movies[selectedMovieIndex];
-        document.getElementById("movieDisplay").innerHTML = `
-            <h3>${selectedMovie.title} (${selectedMovie.year}, ${selectedMovie.origin})</h3>
-            <img src="${selectedMovie.imageUrl}" alt="Poster of ${selectedMovie.title}" class="movie-image">
-          `;
+        updateMovie(selectedMovie);
       } else {
         document.getElementById("movieDisplay").innerHTML = "";
       }
